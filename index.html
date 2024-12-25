@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048's Falco</title>
+    <!-- collegamento al css -->
+    <link rel="stylesheet" href="style/style.css">
+    <!-- collegamento js -->
+    <script src="script/index.js"></script>
+</head>
+<body>
+    <!-- inizio della pagina -->
+    <div class="parte-superiore nav">
+
+    </div>
+    <!-- tabella 4x4 generata con js (genBoard()) -->
+    <button onclick="genBoard()">crea la tabella</button>
+    <button onclick="genCell()">genera la cella</button>
+    <div>
+        <table id="game-board" border="2" style="border-collapse: collapse">
+
+        </table>          
+    </div>
+    <!-- bottoni funzione -->
+    <button onclick="move('up')">SU</button>
+    <button onclick="move('down')">GIU</button>
+    <button onclick="move('right')">DESTRA</button>
+    <button onclick="move('left')">SINISTRA</button>
+</body>
+</html>
