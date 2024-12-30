@@ -1,0 +1,334 @@
+/* ho più o meno un idea. home a due pulsanti: 
+-- versione normale
+-- versione natalizia */
+/* per la palette invece credo di usare questa: https://coolors.co/palette/826aed-c879ff-ffb7ff-3bf4fb-caff8a */
+
+:root {
+    --scritte: #fff;
+    --scritte1: #826AED;
+    --back1: #C879FF;
+    --back: #FFB7FF;
+    --altro: #3BF4FB;
+    --btnClicked: #CAFF8A;
+}
+
+@font-face {
+    font-family: 'halo';
+    src: url(font/Halo\ Dek.ttf);
+}
+
+.testo-centro {
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    background-color: var(--back);
+}
+
+nav {
+    background-color: var(--back1);
+    color: var(--scritte);
+    font-family: 'halo';
+    font-size: 120%;
+    padding: 1%;
+    text-align: center;
+    letter-spacing: 1px;
+    box-shadow: 0px 5px 15px 0px var(--back1);
+    border-radius: 0px 0px 20px 20px;
+}
+
+.mod-label {
+    margin-top: 3%;
+    color: var(--scritte);
+    transform: scale(1.3);
+    font-family: 'halo';
+}
+
+.mod {
+    display: flex;
+    justify-content: center;
+    gap: 5%;
+    margin-top: 3%;
+}
+
+.mod button {
+    width: 20%;
+    border: 0;
+    border-radius: 5px;
+    padding: 1.2%;
+    background-color: var(--back1);
+    color: var(--scritte);
+    font-family: 'halo';
+    transition: 0.3s ease-in-out;
+    position: relative; /* Per posizionare la neve assolutamente rispetto al pulsante */
+}
+
+.mod button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px 0px var(--back1);
+    padding: 1.2%;
+    border-radius: 15px;
+}
+
+.mod button img {
+    transition: 0.3s ease-in-out; /* animare l'immagine */
+}
+
+.mod button:nth-child(1):hover img {
+    transform: translateY(-50px) rotate(-5deg);
+    filter: drop-shadow(0 4px 10px var(--scritte)); /* ombra sull'immagine */
+}
+
+.mod button:nth-child(2):hover img {
+    transform: translateY(-50px) rotate(5deg);
+    filter: drop-shadow(0 4px 10px var(--scritte)); /* ombra sull'immagine */
+}
+
+
+.mod button h3 {
+    transition: 0.3s ease-in-out; /* animare testo */
+}
+
+.mod button:hover h3 {
+    transform: scale(1.4);
+}
+
+.mod button img {
+    width: 80%; /* l'immagine occupa l'80% della larghezza del pulsante */
+    height: auto; /* mantiene le proporzioni */
+}
+
+/* stile per la tabella del 2048 */
+#game-board, #game-board-natalizia {
+    margin: 2% auto;
+    width: 90%;
+    max-width: 500px;
+    background-color: var(--back);
+    border-radius: 15px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+    border-collapse: collapse; /* no spazio tra le celle */
+}
+
+#game-board td, #game-board-natalizia td {
+    width: 25%;
+    height: 100px;
+    text-align: center;
+    vertical-align: middle;
+    font-family: 'halo', sans-serif;
+    font-size: 2rem;
+    color: var(--scritte);
+    border: 3px solid #fff;
+    border-radius: 20px; /* angoli arrotondati tra le celle */
+    transition: all 0.2s ease-in-out;
+}
+
+#game-board td[data-value="0"] {
+    background-color: var(--back);
+    color: transparent;
+}
+
+#game-board td[data-value="2"] {
+    background-color: #b43e8f;
+    color: var(--back);
+}
+
+#game-board td[data-value="4"] {
+    background-color: var(--back1);
+    color: var(--scritte1);
+}
+
+#game-board td[data-value="8"] {
+    background-color: var(--scritte1);
+    color: var(--back);
+}
+
+#game-board td[data-value="16"] {
+    background-color: var(--altro);
+    color: var(--back1);
+}
+
+#game-board td[data-value="32"] {
+    background-color: var(--back1);
+    color: #fff;
+}
+
+#game-board td[data-value="64"] {
+    background-color: #f2994a; 
+    color: #fff;
+}
+
+#game-board td[data-value="128"] {
+    background-color: #f67e4e;
+    color: #fff;
+}
+
+#game-board td[data-value="256"] {
+    background-color: #f65b3f;
+    color: #fff;
+}
+
+#game-board td[data-value="512"] {
+    background-color: #ff7e33;
+    color: #fff;
+}
+
+#game-board td[data-value="1024"] {
+    background-color: #ff4d00;
+    color: #fff;
+}
+
+#game-board td[data-value="2048"] {
+    background-color: #ff1a00;
+    color: #fff;
+}
+
+/* MODALITà NATALIZIA!!!!! */
+#game-board-natalizia td[data-value="0"] {
+    color: transparent;
+    background-image: none;
+}
+
+#game-board-natalizia td[data-value="2"] {
+    color: transparent;
+    background-image: url('../assets/ghirlanda.png');
+    background-size: 50%; /* l'img occupa il 50% della larghezza e altezza della cella */
+    background-repeat: no-repeat; /* evita che l'immagine si ripeta */
+    background-position: center; /* centra l'immagine nella cella */
+}
+
+#game-board-natalizia td[data-value="4"] {
+    color: transparent;
+    background-image: url('../assets/albero-di-natale.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="8"] {
+    color: transparent;
+    background-image: url('../assets/stella-cometa.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="16"] {
+    color: transparent;
+    background-image: url('../assets/fiocco-di-neve.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="32"] {
+    color: transparent;
+    background-image: url('../assets/campane.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="64"] {
+    color: transparent;
+    background-image: url('../assets/candele.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="128"] {
+    color: transparent;
+    background-image: url('../assets/bastoncino-di-zucchero.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="256"] {
+    color: transparent;
+    background-image: url('../assets/regalo.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="512"] {
+    color: transparent;
+    background-image: url('../assets/slitta.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="1024"] {
+    color: transparent;
+    background-image: url('../assets/pungitopo.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#game-board-natalizia td[data-value="2048"] {
+    color: transparent;
+    background-image: url('../assets/babbo-natale.png');
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+
+/* bottoni funzione */
+.play-btn {
+    display: none;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.play-btn button {
+    padding: 20px;
+    font-size: 120%;
+    border: 0px;
+    border-radius: 5px;
+    background-color: var(--back1);
+    color: var(--scritte);
+    transition: 0.3s ease-in-out;
+}
+
+.play-btn button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px 0px var(--back1);
+}
+
+.move-btns {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.move-btns button {
+    padding: 20px;
+    font-size: 120%;
+    border: 0px;
+    border-radius: 5px;
+    background-color: var(--back1);
+    color: var(--scritte);
+    transition: 0.3s ease-in-out;
+}
+
+.move-btns button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 5px 15px 0px var(--back1);
+}
+
+.special-btns {
+    display: flex;
+}

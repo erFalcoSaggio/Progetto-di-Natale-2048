@@ -12,23 +12,56 @@
 <body>
     <!-- inizio della pagina -->
     <div class="parte-superiore nav">
-
+        <nav>
+            <h1>2048's Falco</h1>
+            <h4>Progetto di Natale 2024</h4>
+        </nav>
     </div>
-    <!-- tabella 4x4 generata con js (genBoard()) -->
-    <button onclick="genBoard()">crea la tabella</button>
-    <button onclick="genCell()">genera la cella</button>
-    <button onclick="gen2of1024()">genera due 1024</button>
+    <!-- modalità label grassetto -->
+    <h2 id="mod-label" class="testo-centro mod-label">Seleziona una modalita' di gioco</h2>
+    <!-- game board genBoard() -->
     <div>
         <table id="game-board" border="2" style="border-collapse: collapse">
-
+            
         </table>          
     </div>
-    <!-- bottone play -->
-    <button onclick="main()">Gioca ora!</button>
-    <!-- bottoni funzione -->
-    <button onclick="move('up')">SU</button>
-    <button onclick="move('down')">GIU</button>
-    <button onclick="move('right')">DESTRA</button>
-    <button onclick="move('left')">SINISTRA</button>
+    <!-- modalità -->
+    <div class="mod">
+        <button id="classic-btn" onclick="classic()">
+            <img src="assets/classico no back.png" alt="versione classica">
+            <h3>Classico</h3>
+        </button>
+        <button id="christmas-btn" onclick="christmas()">
+            <img src="assets/ghirlanda.png" alt="ghirlanda">
+            <h3>Natalizia</h3>
+        </button>
+    </div>
+    <!-- ------------------ -->
+    <div class="fn-btns">
+        <!-- bottoni funzione -->
+        <div class="move-btns">
+            <div class="row">
+                <button onclick="move('up')">^</button>
+            </div>
+            <div class="row">
+                <button onclick="move('left')"><</button>
+                <button onclick="move('down')">v</button>
+                <button onclick="move('right')">></button>
+            </div>    
+        </div>
+        
+        <!-- bottone play -->
+        <div class="play-btn">
+            <button onclick="retry()">Riprova!</button>
+        </div>
+
+        <!-- tasti speciali -->
+        <!-- tabella 4x4 generata con js (genBoard()) -->
+        <div class="special-btns">
+            <button onclick="genBoard()">crea la tabella</button>
+            <button onclick="genCell()">genera la cella</button>
+            <button onclick="gen2of1024()">genera due 1024</button>    
+        </div>
+    </div>
 </body>
 </html>

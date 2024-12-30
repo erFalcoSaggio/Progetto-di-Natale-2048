@@ -13,26 +13,39 @@ let grid = [
 
 // funzione per la creazione di una casella
 // !crea 1 sola cella!
+// funzione per la creazione di una casella
 function genCell() {
-    // genera riga e colonna (0-3 per corrispondere a 1-4 nella tabella)
-    let row = Math.floor(Math.random() * 4); // indice 0-3
-    let col = Math.floor(Math.random() * 4); // indice 0-3
+    // trovo tutte le celle vuote
+    let celleVuote = [];
+    for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+            if (grid[row][col] === 0) {
+                celleVuote.push({ row, col });
+            }
+        }
+    }
 
-    // genera un numero tra 2 e 4
-    const numGenerateable = [2, 4];
-    let prob = Math.random();
-    let n = prob < 0.666 ? numGenerateable[0] : numGenerateable[1];
+    // se ci sono celle vuote, scelgo una a caso
+    if (celleVuote.length > 0) {
+        let scelta = celleVuote[Math.floor(Math.random() * celleVuote.length)];
+        let row = scelta.row;
+        let col = scelta.col;
 
-    // controlla se la cella è vuota
-    if (grid[row][col] === 0) {
+        // genera un numero tra 2 e 4
+        const numGenerateable = [2, 4];
+        let prob = Math.random();
+        let n = prob <= 0.666 ? numGenerateable[0] : numGenerateable[1];
+
         // aggiorna la griglia
         grid[row][col] = n;
 
         // trova la cella nella tabella e aggiorna il contenuto
         let cellElement = document.getElementById(`${row + 1} - ${col + 1}`);
         if (cellElement) {
-            cellElement.innerHTML = n;  // imposta il valore della cella
+            cellElement.innerHTML = n; // imposta il valore della cella
         }
+    } else {
+        console.log("Nessuna cella vuota disponibile.");
     }
 }
 
@@ -63,20 +76,42 @@ function genBoard() {
         // riga alla tabella
         gameBoard.appendChild(newTr);
     }
-    // appendo tutto al body
-    document.body.appendChild(gameBoard);
     // genero due celle random
     genCell();
     genCell();
 }
 
+// attribuire il data-value ad ogni cella
+// utile per il css
+function relTable() {
+    document.querySelectorAll('#game-board td').forEach(cell => {
+        const value = parseInt(cell.innerText, 10); // ottengo il valore della cella (in base 10 ovvio)
+        cell.setAttribute('data-value', value);    // imposto il valore nel data-value
+    });    
+
+    document.querySelectorAll('#game-board-natalizia td').forEach(cell => {
+        const value = parseInt(cell.innerText, 10); // ottengo il valore della cella (in base 10 ovvio)
+        cell.setAttribute('data-value', value);    // imposto il valore nel data-value
+    });  
+}
+
+
 // gestione dei tasti funzione, usando la funzione move
 // tasti grezzi su, giu, destra, sinistra => prima versione
 // funzione move passando che tasto ha premuto
 function move(key) {
-    console.log(key);
+    // controllo se hai perso
+    let isGameOverResult = isGameOver();
+    console.log(isGameOverResult);
 
-    // uso uno switch per direzionare le giuste funzioni
+    if (isGameOverResult) {
+        alert('hai perso');
+    }
+
+    // salvo lo stato originale della griglia
+    const originalGrid = JSON.stringify(grid);
+
+    // movimento con uno switch
     switch (key) {
         case 'up':
             moveUp();
@@ -84,34 +119,28 @@ function move(key) {
         case 'down':
             moveDown();
             break;
-        case 'right':
-            moveRight();
-            break;
         case 'left':
             moveLeft();
             break;
-        default:
-            alert('ERRORE: Il tasto da te premuto non può avere effetto nel gioco! Riprova!');
+        case 'right':
+            moveRight();
             break;
     }
+
+    // confronto lo stato della griglia prima e dopo
+    const newGrid = JSON.stringify(grid);
+
+    if (originalGrid !== newGrid) {
+        // genro una nuova cella solo se la griglia è cambiata
+        genCell();
+    }
+    
+    relTable();
 }
 
 // QUI CI SONO TUTTE LE FUNZIONI PER LO SPOSTAMENTO
 // ⛔️ ATTENZIONE TOCCARE CON CURA ⛔️
 function moveUp() {
-    // controllo se hai perso
-    let isGameOverResult = isGameOver();
-    console.log(isGameOverResult);
-
-    if (isGameOverResult) {
-        alert('hai perso');
-        window.location.reload(); // aggiorno la pagina
-        return;
-    }
-
-    
-    let gridModified = false; // variabile per tracciare se la griglia è stata modificata
-    
     for (let col = 0; col < 4; col++) {
         let currentCol = [];
         for (let row = 0; row < 4; row++) {
@@ -133,7 +162,6 @@ function moveUp() {
                 filteredCol[i] *= 2; // somma
                 filteredCol[i + 1] = 0; // azzera il secondo numero
                 i += 2; // salto l'elemento appena unito
-                gridModified = true; // segnalo che la griglia è cambiata
             } else {
                 i++; // solo se non unisco i numeri, passo al prossimo
             }
@@ -156,9 +184,6 @@ function moveUp() {
         
         // aggiorno la griglia
         for (let row = 0; row < 4; row++) {
-            if (grid[row][col] !== newCol[row]) {
-                gridModified = true; // segnalo che la griglia è cambiata
-            }
             grid[row][col] = newCol[row];
         }
         
@@ -173,27 +198,9 @@ function moveUp() {
     if (is2048) {
         return;
     }
-    
-    // vado a generare una cella casuale solo se la griglia è stata modificata
-    if (gridModified) {
-        genCell();
-    }
 }
 // ----------------- //
 function moveDown() {
-    // controllo se hai perso
-    let isGameOverResult = isGameOver();
-    console.log(isGameOverResult);
-
-    if (isGameOverResult) {
-        alert('hai perso');
-        window.location.reload(); // aggiorno la pagina
-        return;
-    }
-
-    
-    let gridModified = false; // variabile per tracciare se la griglia è stata modificata
-    
     for (let col = 0; col < 4; col++) {
         let currentCol = [];
         for (let row = 0; row < 4; row++) {
@@ -215,7 +222,6 @@ function moveDown() {
                 filteredCol[i] *= 2; // somma
                 filteredCol[i - 1] = 0; // azzera il secondo numero
                 i -= 2; // salto l'elemento appena unito
-                gridModified = true; // segnalo che la griglia è cambiata
             } else {
                 i--; // solo se non unisco i numeri, passo al prossimo
             }
@@ -238,9 +244,6 @@ function moveDown() {
         
         // aggiorno la griglia
         for (let row = 0; row < 4; row++) {
-            if (grid[row][col] !== newCol[row]) {
-                gridModified = true; // segnalo che la griglia è cambiata
-            }
             grid[row][col] = newCol[row];
         }
         
@@ -255,27 +258,9 @@ function moveDown() {
     if (is2048) {
         return;
     }
-
-    // vado a generare una cella casuale solo se la griglia è stata modificata
-    if (gridModified) {
-        genCell();
-    }
 }
 // ----------------- //
 function moveRight() {
-    // controllo se hai perso
-    let isGameOverResult = isGameOver();
-    console.log(isGameOverResult);
-
-    if (isGameOverResult) {
-        alert('hai perso');
-        window.location.reload(); // aggiorno la pagina
-        return;
-    }
-
-    
-    let gridModified = false; // variabile per tracciare se la griglia è stata modificata
-    
     for (let row = 0; row < 4; row++) {
         let currentRow = [];
         for (let col = 0; col < 4; col++) {
@@ -297,7 +282,6 @@ function moveRight() {
                 filteredRow[i] *= 2; // somma
                 filteredRow[i - 1] = 0; // azzera il secondo numero
                 i -= 2; // salto l'elemento appena unito
-                gridModified = true; // segnalo che la griglia è cambiata
             } else {
                 i--; // solo se non unisco i numeri, passo al prossimo
             }
@@ -320,9 +304,6 @@ function moveRight() {
         
         // aggiorno la griglia
         for (let col = 0; col < 4; col++) {
-            if (grid[row][col] !== newRow[col]) {
-                gridModified = true; // segnalo che la griglia è cambiata
-            }
             grid[row][col] = newRow[col];
         }
         
@@ -337,27 +318,9 @@ function moveRight() {
     if (is2048) {
         return;
     }
-
-    // vado a generare una cella casuale solo se la griglia è stata modificata
-    if (gridModified) {
-        genCell();
-    }
 }
 // ----------------- //
 function moveLeft() {
-    // controllo se hai perso
-    let isGameOverResult = isGameOver();
-    console.log(isGameOverResult);
-
-    if (isGameOverResult) {
-        alert('hai perso');
-        window.location.reload(); // aggiorno la pagina
-        return;
-    }
-
-    
-    let gridModified = false; // variabile per tracciare se la griglia è stata modificata
-    
     for (let row = 0; row < 4; row++) {
         let currentRow = [];
         for (let col = 0; col < 4; col++) {
@@ -378,7 +341,6 @@ function moveLeft() {
                 filteredRow[i] *= 2; // somma
                 filteredRow[i + 1] = 0; // azzera il secondo numero
                 i++; // salto l'elemento appena unito
-                gridModified = true; // segnalo che la griglia è cambiata
             }
         }
         
@@ -399,9 +361,6 @@ function moveLeft() {
         
         // aggiorno la griglia
         for (let col = 0; col < 4; col++) {
-            if (grid[row][col] !== newRow[col]) {
-                gridModified = true; // segnalo che la griglia è cambiata
-            }
             grid[row][col] = newRow[col];
         }
         
@@ -409,17 +368,12 @@ function moveLeft() {
         relGridRightLeft(row, newRow);
     }
     console.log("Griglia aggiornata:", grid);
-
+    
     // controllo se hai vinto
     let is2048 = checkVictory();
     
     if (is2048) {
         return;
-    }
-    
-    // vado a generare una cella casuale solo se la griglia è stata modificata
-    if (gridModified) {
-        genCell();
     }
 }
 
@@ -429,6 +383,7 @@ function relGridUpDown(col, newCol) {
         grid[rowIndex][col] = newCol[rowIndex];
         document.getElementById(`${rowIndex + 1} - ${col + 1}`).innerHTML = grid[rowIndex][col]; // aggiorna la cella
     }
+    relTable();
 }
 
 function relGridRightLeft(row, newRow) {
@@ -436,6 +391,7 @@ function relGridRightLeft(row, newRow) {
         grid[row][col] = newRow[col];
         document.getElementById(`${row + 1} - ${col + 1}`).innerHTML = grid[row][col]; // aggiorna la cella
     }
+    relTable();
 }
 
 // ⛔️ game over ⛔️
@@ -458,6 +414,8 @@ function isGameOver() {
         }
     }
 
+    document.querySelector('.play-btn').style.display = 'flex';
+
     // Se non ci sono più mosse, il gioco è finito
     return true;
 }
@@ -468,10 +426,12 @@ function checkVictory() {
         for (let col = 0; col < 4; col++) {
             if (grid[row][col] === 2048) { // controllo se esiste il numero 2048 nella griglia
                 alert("Hai vinto!"); // messaggio
+                document.querySelector('.play-btn').style.display = 'flex';
                 return true; // vittoria raggiunta
             }
         }
     }
+
     return false; // fake, nessuna vittoria
 }
 
@@ -480,10 +440,45 @@ function checkVictory() {
 // main() non mi passo valori
 // viene avviata dal bottone 'play'
 function main() {
+    let moveBtns = document.querySelector('.move-btns');
+
+    // li RIrendo visibili
+    moveBtns.style.display = 'flex';
     genBoard();
+    relTable();
 }
 
+// le due funzioni per le due modalità di gioco
+// classica e natalizia
+function classic() {
+    let modLabel = document.getElementById('mod-label');
+    let btnClassic = document.getElementById('classic-btn');
+    let btnChristman = document.getElementById('christmas-btn');
 
+    // modifica le cose basilari
+    modLabel.textContent = '2048 Versione Classica';
+    btnClassic.style.display = 'none';
+    btnChristman.style.display = 'none';
+
+    // richiamo alle funzioni
+    main();
+}
+
+function christmas() {
+    let modLabel = document.getElementById('mod-label');
+    let btnClassic = document.getElementById('classic-btn');
+    let btnChristman = document.getElementById('christmas-btn');
+
+    // modifica le cose basilari
+    modLabel.textContent = '2048 Versione Classica';
+    btnClassic.style.display = 'none';
+    btnChristman.style.display = 'none';
+
+    // richiamo alle funzioni
+    main();
+    let gameBoard = document.getElementById('game-board');
+    gameBoard.id = ('game-board-natalizia')
+}
 
 
 
@@ -494,4 +489,31 @@ function gen2of1024() {
     // posiziona direttamente due celle con valore 1024
     grid[0][0] = 1024;
     grid[1][1] = 1024;
+}
+
+
+// FRECCETTE DA TASTIERA
+document.addEventListener('keydown', function(event) {
+    // verifico quale tasto è stato premuto
+    switch (event.key) {
+        case 'ArrowUp':
+            move('up');
+            break;
+        case 'ArrowDown':
+            move('down');
+            break;
+        case 'ArrowLeft':
+            move('left');
+            break;
+        case 'ArrowRight':
+            move('right');
+            break;
+        default:
+            break;
+    }
+});
+
+// AGGIORNARE LA PAGINA TASTO RIPROVA
+function retry () {
+    window.location.reload();
 }
