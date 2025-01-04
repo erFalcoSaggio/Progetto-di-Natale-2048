@@ -11,6 +11,8 @@ let grid = [
     [0, 0, 0, 0],
 ];
 
+let score = 0;
+
 // funzione per la creazione di una casella
 // !crea 1 sola cella!
 // funzione per la creazione di una casella
@@ -135,6 +137,7 @@ function move(key) {
         genCell();
     }
     
+    updateScore(); // aggiorno lo score
     relTable();
 }
 
@@ -160,6 +163,7 @@ function moveUp() {
         while (i < filteredCol.length - 1) {
             if (filteredCol[i] === filteredCol[i + 1]) {
                 filteredCol[i] *= 2; // somma
+                score += filteredCol[i]; // incremento lo score
                 filteredCol[i + 1] = 0; // azzera il secondo numero
                 i += 2; // salto l'elemento appena unito
             } else {
@@ -220,6 +224,7 @@ function moveDown() {
         while (i > 0) {
             if (filteredCol[i] === filteredCol[i - 1]) {
                 filteredCol[i] *= 2; // somma
+                score += filteredCol[i]; // incremento lo score
                 filteredCol[i - 1] = 0; // azzera il secondo numero
                 i -= 2; // salto l'elemento appena unito
             } else {
@@ -280,6 +285,7 @@ function moveRight() {
         while (i > 0) {
             if (filteredRow[i] === filteredRow[i - 1]) {
                 filteredRow[i] *= 2; // somma
+                score += filteredRow[i]; // incremento lo score
                 filteredRow[i - 1] = 0; // azzera il secondo numero
                 i -= 2; // salto l'elemento appena unito
             } else {
@@ -339,6 +345,7 @@ function moveLeft() {
         for (let i = 0; i < filteredRow.length - 1; i++) {
             if (filteredRow[i] === filteredRow[i + 1]) {
                 filteredRow[i] *= 2; // somma
+                score += filteredRow[i]; // incremento lo score
                 filteredRow[i + 1] = 0; // azzera il secondo numero
                 i++; // salto l'elemento appena unito
             }
@@ -454,11 +461,13 @@ function classic() {
     let modLabel = document.getElementById('mod-label');
     let btnClassic = document.getElementById('classic-btn');
     let btnChristman = document.getElementById('christmas-btn');
+    let score = document.getElementById('score');
 
     // modifica le cose basilari
     modLabel.textContent = '2048 Versione Classica';
     btnClassic.style.display = 'none';
     btnChristman.style.display = 'none';
+    score.style.display = 'block';
 
     // richiamo alle funzioni
     main();
@@ -468,11 +477,13 @@ function christmas() {
     let modLabel = document.getElementById('mod-label');
     let btnClassic = document.getElementById('classic-btn');
     let btnChristman = document.getElementById('christmas-btn');
+    let score = document.getElementById('score');
 
     // modifica le cose basilari
     modLabel.textContent = '2048 Versione Classica';
     btnClassic.style.display = 'none';
     btnChristman.style.display = 'none';
+    score.style.display = 'block';
 
     // richiamo alle funzioni
     main();
@@ -516,4 +527,8 @@ document.addEventListener('keydown', function(event) {
 // AGGIORNARE LA PAGINA TASTO RIPROVA
 function retry () {
     window.location.reload();
+}
+
+function updateScore () {
+    document.getElementById('score').innerText = score;
 }
