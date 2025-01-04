@@ -492,9 +492,6 @@ function christmas() {
 }
 
 
-
-
-
 // FUNZIONI SPECIALI
 function gen2of1024() {
     // posiziona direttamente due celle con valore 1024
@@ -531,4 +528,33 @@ function retry () {
 
 function updateScore () {
     document.getElementById('score').innerText = score;
+}
+
+
+// BOTTONI SPECIALI PER L'UTENTE (MAX=1 PER GAME)
+// elimina tutti i 2 e 4 nella grid
+function delete2and4 () {
+    grid.forEach((row, rowIndex) => {
+        console.log(row);
+        // essendo il grid un array multidirezionale "row" === una riga
+        row.forEach((element, colIndex) => {
+            console.log(element);
+            if (element === 2 || element === 4) {
+                grid[rowIndex][colIndex] = 0;
+            }
+        });
+    });
+    console.log(grid);
+    updateTable() // serve per assegnare 0 alla cella
+    relTable();
+}
+
+// questa funzione serve per assegnare 0 alla cella se è già 0 nel grid
+function updateTable() {
+    grid.forEach((row, rowIndex) => {
+        row.forEach((element, colIndex) => {
+            let cellElement = document.getElementById(`${rowIndex + 1} - ${colIndex + 1}`);
+            cellElement.textContent = element === 0 ? "" : element; // mostra vuoto per 0
+        });
+    });
 }
