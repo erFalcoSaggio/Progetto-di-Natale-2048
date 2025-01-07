@@ -50,6 +50,7 @@
             </div>    
         </div>
         
+
         <!-- bottone play -->
         <div class="play-btn">
             <button onclick="retry()">Riprova!</button>
@@ -57,9 +58,11 @@
 
         <!-- bottoni speciali (visibili dall'utente max=1) -->
         <div class="bonus-btns">
-            <button onclick="delete2and4()">Elimina (2 & 4)</button>
-            <button onclick="reOrder()">Riordina</button>
+            <button id="delete2and4" onclick="delete2and4()">Elimina (2 & 4)</button>
         </div>
+
+        <!-- score -->
+        <p id="score">&nbsp;</p>
 
         <!-- tasti speciali -->
         <!-- tabella 4x4 generata con js (genBoard()) -->
@@ -69,7 +72,5 @@
             <button onclick="gen2of1024()">genera due 1024</button>
         </div>
     </div>
-
-    <p id="score"></p>
 </body>
 </html>

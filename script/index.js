@@ -12,6 +12,8 @@ let grid = [
 ];
 
 let score = 0;
+// variabile per controllare il limite di BONUS (uno a partita)
+let bonus = 1;
 
 // funzione per la creazione di una casella
 // !crea 1 sola cella!
@@ -136,7 +138,14 @@ function move(key) {
         // genro una nuova cella solo se la griglia è cambiata
         genCell();
     }
-    
+
+    // controllo per rendere visibile il bonus => flat => array monodimensionale
+    if (grid.flat().includes(8)) {
+        if (bonus === 1) {
+            document.querySelector('.bonus-btns').style.display = 'flex';
+        }
+    }
+
     updateScore(); // aggiorno lo score
     relTable();
 }
@@ -451,6 +460,7 @@ function main() {
 
     // li RIrendo visibili
     moveBtns.style.display = 'flex';
+
     genBoard();
     relTable();
 }
@@ -505,15 +515,19 @@ document.addEventListener('keydown', function(event) {
     // verifico quale tasto è stato premuto
     switch (event.key) {
         case 'ArrowUp':
+            event.preventDefault(); // Previene lo scroll della pagina
             move('up');
             break;
         case 'ArrowDown':
+            event.preventDefault(); // Previene lo scroll della pagina
             move('down');
             break;
         case 'ArrowLeft':
+            event.preventDefault(); // Previene lo scroll della pagina
             move('left');
             break;
         case 'ArrowRight':
+            event.preventDefault(); // Previene lo scroll della pagina
             move('right');
             break;
         default:
@@ -534,19 +548,25 @@ function updateScore () {
 // BOTTONI SPECIALI PER L'UTENTE (MAX=1 PER GAME)
 // elimina tutti i 2 e 4 nella grid
 function delete2and4 () {
-    grid.forEach((row, rowIndex) => {
-        console.log(row);
-        // essendo il grid un array multidirezionale "row" === una riga
-        row.forEach((element, colIndex) => {
-            console.log(element);
-            if (element === 2 || element === 4) {
-                grid[rowIndex][colIndex] = 0;
-            }
+    if (bonus === 1) {
+        bonus--;
+        grid.forEach((row, rowIndex) => {
+            console.log(row);
+            // essendo il grid un array multidirezionale "row" === una riga
+            row.forEach((element, colIndex) => {
+                console.log(element);
+                if (element === 2 || element === 4) {
+                    grid[rowIndex][colIndex] = 0;
+                }
+            });
         });
-    });
-    console.log(grid);
-    updateTable() // serve per assegnare 0 alla cella
-    relTable();
+        console.log(grid);
+        updateTable() // serve per assegnare 0 alla cella
+        relTable();    
+    } else {
+        alert ('Non puoi più usare bonus!');
+        document.getElementById('delete2and4').style.display = 'none';
+    }
 }
 
 // questa funzione serve per assegnare 0 alla cella se è già 0 nel grid
