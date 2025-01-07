@@ -24,6 +24,7 @@
 body {
     margin: 0;
     background-color: var(--back);
+    padding-bottom: 30%;
 }
 
 nav {
@@ -382,4 +383,19 @@ nav {
 .bonus-btns button:hover {
     transform: scale(1.05);
     box-shadow: 0px 5px 15px 0px var(--back1);
+}
+
+/* footer */
+footer {
+    font-family: 'halo';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--back1);
+    color: var(--scritte);
+    text-align: center;
+    padding: 10px 0;
+    font-size: 14px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
